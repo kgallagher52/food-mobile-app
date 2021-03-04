@@ -5,12 +5,12 @@ import { Feather } from '@expo/vector-icons';
 const SearchBar = ({ onTermChange, term, onTermSubmit }) => {
 
     return (
-        <View style={styles.backgroundStyle}>
+        <View style={styles.container}>
             <Feather style={styles.icon} name="search" color="black" />
             <TextInput
                 value={term}
                 onChangeText={(updatedTerm) => onTermChange(updatedTerm)}
-                onEndEditing={() => onTermSubmit()}
+                onEndEditing={() => onTermSubmit(term)}
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={styles.inputStyle}
@@ -21,13 +21,13 @@ const SearchBar = ({ onTermChange, term, onTermSubmit }) => {
 }
 
 const styles = StyleSheet.create({
-    backgroundStyle: {
+    container: {
         backgroundColor: '#F0EEEE',
         height: 50,
         borderRadius: 8,
         marginHorizontal: 15,
         flexDirection: 'row',
-        marginTop: 15
+        marginVertical: 15
     },
     inputStyle: {
         flex: 1, // Use up as much space as I can

@@ -13,14 +13,7 @@ export default () => {
                 term: searchTerm // Since term is the param we need we can use es6 to do term instead of term: term
             } // Automatically appended to our query string
         }).then(res => {
-            let data = res.data.businesses
-            setResults({
-                name: data.price,
-                imageSrc: data.imageSrc,
-                price: data.price,
-                rating: data.rating,
-                reviewCount: data.review_count
-            })
+            setResults(res.data.businesses);
         }).catch(err => {
             setErrorMessage("Something went wrong..")
             console.log(err)
@@ -28,7 +21,10 @@ export default () => {
     }
 
     useEffect(() => { // Get initial data
-        searchApi("pizza");
+        searchApi("pasta");
+        return () => {
+            setResults([])
+        }
     }, [])
 
     return [searchApi, results, errorMessage]

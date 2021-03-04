@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import SearchBar from '../components/SearchBar'
 import useResults from '../hooks/useResults'
 import ResultsList from '../components/ResultsList'
@@ -17,36 +17,31 @@ const Search = () => {
     const [term, setTerm] = useState("");
     const [searchApi, results, errorMessage] = useResults();
 
-    const filterResultsByPrice = (price) => {
-        // Price = '$' || '$$' || '$$$'
+
+    const filterResultsByPrice = price => {
+        return results.filter(results => { return results.price === price })
     }
 
     return (
-        <View style={styles.container}>
+        <>
             <SearchBar
                 onTermChange={setTerm}
                 term={term}
-                onTermSubmit={(term) => { searchApi(term) }}
+                onTermSubmit={(term) => searchApi(term)}
             />
-            <Text>We have found {results.length} results</Text>
             {errorMessage.length > 0 && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-            {/* <FlatList
-                data={colors}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => {
-                    return <ResultsList
-                        title={"Cost Effective"}
-                    />
-                }}
-            /> */}
-        </View>
+
+            <ScrollView>
+                <ResultsList results={filterResultsByPrice('$')} title={"Cost Effective"} />
+                <ResultsList results={filterResultsByPrice('$$')} title={"Bit Pricer"} />
+                <ResultsList results={filterResultsByPrice('$$$')} title={"Big Spender"} />
+                <ResultsList results={filterResultsByPrice('$$$$')} title={"Hurt Your Wallet"} />
+            </ScrollView>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff'
-    },
     errorMessage: {
         color: 'red'
     }
